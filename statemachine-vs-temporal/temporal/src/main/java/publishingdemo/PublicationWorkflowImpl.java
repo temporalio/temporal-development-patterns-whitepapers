@@ -13,18 +13,13 @@ import publishingdemo.model.Document;
 import io.temporal.workflow.Saga;
 
 /**
- * PublicationWorkflow implementation that demonstrates the use of Temporal's Saga feature.
- *
- * The publish() activity within the startWorkflow(Document document) applies a compensation
- * to each activity executed. The only activity that fails. However,
- * that method is wrapped in a Saga that will compensate the activity that failed. The compensation
- * has corrective behavior for the method, publish(), that failed.
- */
+* This class implements the PublicationWorkflow interface. It calls the
+* copyEdit(), graphicEdit() and publish() activities
+*/
 public class PublicationWorkflowImpl implements PublicationWorkflow {
   private final PublishingActivities activities;
   private static final Logger logger = Workflow.getLogger(PublicationWorkflowImpl.class);
   private final WorkflowQueue<Runnable> queue = Workflow.newWorkflowQueue(1024);
-  private boolean exit = false;
   private boolean copyEditComplete = false;
   private boolean graphicEditComplete = false;
   private boolean publishingComplete = false;
@@ -44,24 +39,17 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
   }
 
   /**
-   * This method starts the workflow. Notice that the copyEdit, graphicEdit and publish activities
-   * are wrapped in a Temporal Saga. The Saga class provides the mechanism by which compensation behavior is
-   * invoked. Take a look at method, PublishingActivitiesImpl.compensate(String activityName, Document document)
-   * to see how the general compensation behavior is implemented.
+   * This method starts the workflow. It calls the copyEdit(), graphicEdit()
+   * and publish() activities
    * @param document, the Document to be processed
    */
   @Override
   public void startWorkflow(Document document) {
-    Saga saga = new Saga(new Saga.Options.Builder().setParallelCompensation(false).build());
     logger.info("Starting Workflow for Publishing");
     try {
       Promise<Void> copyEditPromise = Async.procedure(activities::copyEdit, document);
       Promise<Void> grppicEditPromise = Async.procedure(activities::graphicEdit, document);
-
-      saga.addCompensation(activities::compensate, "copyEdit", document);
       copyEditPromise.get();
-
-      saga.addCompensation(activities::compensate, "graphicEdit", document);
       grppicEditPromise.get();
 
       if (copyEditPromise.isCompleted()) {
@@ -72,19 +60,20 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
         logger.info("Graphic edit complete");
         graphicEditComplete = true;
       }
-
+      // Wait for the flags to be set that indicate that the copyEdit and
+      // graphicEdit activities are complete.
       Workflow.await(() -> graphicEditComplete && copyEditComplete);
       Promise<Void> publishPromise = Async.procedure(activities::publish, document);
-      saga.addCompensation(activities::compensate, "publish", document);
       publishPromise.get();
 
       if (publishPromise.isCompleted()) {
         logger.info("Publishing complete");
         publishingComplete = true;
       }
+      // Wait for the flags to be set that indicate that the copyEdit,
+      // activities are complete.
       Workflow.await(() -> copyEditComplete && graphicEditComplete && publishingComplete);
     } catch (ActivityFailure e) {
-      saga.compensate();
       throw e;
     }
   }
