@@ -19,7 +19,8 @@ activity in the workflow is defined in the file [PublishingActivitiesImpl.java](
 Separating the workflow from the activities is a key feature of Temporal. The separation of concerns makes it possible to change  the sequence
 of activities in the workflow without having to change the code for the activities. Also, the separation of concerns – workflow from activities –
 makes it possible to add new activities to the workflow easily. For example, if a developer wanted to add a new activity to the workflow, say, `LegalReview`,
-the developer adds a declaration for the  `legalReview` method in an activity to the `PublishingActivites` interface with an
+the developer adds a declaration for an activity method named `legalReview()` to the [`PublishingActivities`](src/main/java/publishingdemo/PublishingActivities.java) interface 
+file annotating the method with an
 [`@ActivityMethod`](https://docs.temporal.io/dev-guide/java/foundations#develop-activities) annotation. Then, the developer
 implements the activity behavior in the `PublishingActivitiesImpl` class. The only thing that left to do is to modify the sequence of activities to the
 workflow file [PublicationWorkflowImpl.java](src/main/java/publishingdemo/PublicationWorkflowImpl.java).
