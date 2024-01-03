@@ -12,6 +12,16 @@ The Copy Edit and Graphic Edit activities execute concurrently. Upon completion 
 
 ![statemachine-03](https://github.com/reselbob/publishing-statemachine/assets/1110569/488b624d-c8fb-46bc-9e6b-85c0e9ebea2f)
 
+The thing to notice about the Temporal code is that the sequence of activities is defined in the
+file [PublicationWorkflowImpl.java](src/main/java/publishingdemo/PublicationWorkflowImpl.java). However, the code for each
+activity in the workflow is defined in the file [PublishingActivitiesImpl.java](src/main/java/publishingdemo/PublishingActivitiesImpl.java).
+
+Separating the workflow from the activities is a key feature of Temporal. The separation of concerns makes it possible to change  the sequence
+of activities in the workflow without having to change the code for the activities. Also, the separation of concerns – workflow from activities –
+make it possible to add new activities to the workflow easily. For example, if you wanted to add a new activity to the workflow, say, `LegalReview`,
+the developer adds declaration `LegalReview` in an activity to the `PublishingActivites` interface with an `@ActivityMethod` annotation. Then, the developer
+implements the activity behavior in the `PublishingActivitiesImpl` class. The only thing that left to do is add the activity the sequence of activities in the
+workflow file [PublicationWorkflowImpl.java](src/main/java/publishingdemo/PublicationWorkflowImpl.java).
 
 # Running the code:
 
