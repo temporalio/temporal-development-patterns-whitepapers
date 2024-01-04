@@ -1,6 +1,6 @@
 package pubstatemachine.state;
 
-import pubstatemachine.Document;
+import pubstatemachine.model.Document;
 import pubstatemachine.StateMonitor;
 import pubstatemachine.message.AbstractMessage;
 import pubstatemachine.message.MessageImpl;

@@ -1,5 +1,7 @@
 package pubstatemachine;
 
+import pubstatemachine.model.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -3,6 +3,7 @@ package pubstatemachine;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import pubstatemachine.model.Document;
 
 import java.net.MalformedURLException;
 import java.net.URL;

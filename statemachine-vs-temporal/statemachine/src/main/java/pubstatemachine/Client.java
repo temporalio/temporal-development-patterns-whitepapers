@@ -3,6 +3,7 @@ package pubstatemachine;
 import pubstatemachine.message.AbstractMessage;
 import pubstatemachine.message.MessageImpl;
 import pubstatemachine.message.MessageType;
+import pubstatemachine.model.Document;
 
 import java.net.MalformedURLException;
 import java.net.URL;

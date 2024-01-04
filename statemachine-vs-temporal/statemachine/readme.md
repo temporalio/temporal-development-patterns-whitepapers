@@ -1,10 +1,17 @@
 # State Machine for Document Publication Use Case
-The purpose of this project is to demonstrate how to implement a message driven state machine. This example is a Maven project.
-The code uses a simple message queue that ships with the project.
+The purpose of this project is to demonstrate how to implement fictitious Document Publishing workflow using a message driven state machine. This
+example is a Maven project. The code uses a simple message queue that ships with the project.
 
 The use case the statement machine implements is illustrated in the following diagram:
 
 ![statemachine-02](https://github.com/reselbob/publishing-statemachine/assets/1110569/a44328bf-259a-4a74-8d9e-fbbd2d905a17)
+
+The project consists of 3 basic components:
+
+- [Client], which is the main entry point for the application and sends the initial `EVENT_EDITABLE` event to the controller via the message queue
+- [Controller], which is the message queue listener and the state machine controller
+- [StateMonitor], which keeps track of the various states through which a `Document` object passes
+
 
 # Running the code:
 
@@ -55,7 +62,7 @@ mvn clean package install
 In that same terminal window run:
 
 ```bash
-mvn exec:java -Dexec.mainClass="demo.pubstatemachine.Client"
+mvn exec:java -Dexec.mainClass="pubstatemachine.Client"
 ```
 
 You'll get output similar to the following:

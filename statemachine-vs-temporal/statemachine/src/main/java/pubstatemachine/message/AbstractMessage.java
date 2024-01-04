@@ -1,6 +1,6 @@
 package pubstatemachine.message;
 
-import pubstatemachine.Document;
+import pubstatemachine.model.Document;
 
 public abstract class AbstractMessage {
     private final MessageType messageType;

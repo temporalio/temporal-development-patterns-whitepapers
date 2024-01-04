@@ -1,4 +1,4 @@
-package pubstatemachine;
+package pubstatemachine.model;
 
 import java.net.URL;
 import java.util.UUID;
