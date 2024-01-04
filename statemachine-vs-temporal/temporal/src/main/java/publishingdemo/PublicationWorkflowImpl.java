@@ -10,12 +10,11 @@ import io.temporal.workflow.WorkflowQueue;
 import java.time.Duration;
 import org.slf4j.Logger;
 import publishingdemo.model.Document;
-import io.temporal.workflow.Saga;
 
 /**
-* This class implements the PublicationWorkflow interface. It calls the
-* copyEdit(), graphicEdit() and publish() activities
-*/
+ * This class implements the PublicationWorkflow interface. It calls the copyEdit(), graphicEdit()
+ * and publish() activities
+ */
 public class PublicationWorkflowImpl implements PublicationWorkflow {
   private final PublishingActivities activities;
   private static final Logger logger = Workflow.getLogger(PublicationWorkflowImpl.class);
@@ -29,18 +28,19 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
         ActivityOptions.newBuilder()
             .setScheduleToCloseTimeout(Duration.ofSeconds(10))
             .setTaskQueue("PublishingDemo")
-                .setRetryOptions(
-                        RetryOptions.newBuilder()
-                                .setInitialInterval(Duration.ofSeconds(1))
-                                .setMaximumAttempts(1)
-                                .build())
+            .setRetryOptions(
+                RetryOptions.newBuilder()
+                    .setInitialInterval(Duration.ofSeconds(1))
+                    .setMaximumAttempts(1)
+                    .build())
             .build();
     this.activities = Workflow.newActivityStub(PublishingActivities.class, options);
   }
 
   /**
-   * This method starts the workflow. It calls the copyEdit(), graphicEdit()
-   * and publish() activities
+   * This method starts the workflow. It calls the copyEdit(), graphicEdit() and publish()
+   * activities
+   *
    * @param document, the Document to be processed
    */
   @Override

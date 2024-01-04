@@ -1,12 +1,11 @@
 package pubstatemachine;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import pubstatemachine.model.Document;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /** Unit test for simple App. */
 public class AppTest extends TestCase {
@@ -27,7 +26,8 @@ public class AppTest extends TestCase {
   }
 
   public void testStateMonitorList() throws MalformedURLException {
-    URL url = new URL("https://learn.temporal.io/getting_started/#set-up-your-development-environment");
+    URL url =
+        new URL("https://learn.temporal.io/getting_started/#set-up-your-development-environment");
     Document doc1 = new Document(url);
     StateMonitor sm1 = new StateMonitor(doc1);
     sm1.setEditable(true);

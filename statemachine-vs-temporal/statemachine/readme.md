@@ -1,6 +1,6 @@
 # State Machine for Document Publication Use Case
-The purpose of this project is to demonstrate how to implement fictitious Document Publishing workflow using a message driven state machine. This
-example is a Maven project. The code uses a simple message queue that ships with the project.
+The purpose of this project is to demonstrate how to implement a fictitious Document Publishing workflow using a 
+message driven state machine. This example is a Maven project. The code uses a simple message queue that ships with the project.
 
 The use case the statement machine implements is illustrated in the following diagram:
 
@@ -8,10 +8,23 @@ The use case the statement machine implements is illustrated in the following di
 
 The project consists of 3 basic components:
 
-- [Client], which is the main entry point for the application and sends the initial `EVENT_EDITABLE` event to the controller via the message queue
-- [Controller], which is the message queue listener and the state machine controller
-- [StateMonitor], which keeps track of the various states through which a `Document` object passes
+- [Client](src/main/java/pubstatemachine/Client.java), which is the main entry point for the application and sends the initial `EVENT_EDITABLE` event to the controller via the message queue
+- [Controller](src/main/java/pubstatemachine/Controller.java), which is the message queue listener and the state machine controller
+- [StateMonitor](src/main/java/pubstatemachine/StateMonitor.java), which keeps track of the various states through which a `Document` object passes
 
+The application moves between various states according to messages received from the message queue. The transition rules for the 
+various states are defined in the classes as follows:
+
+- [`Inactive`](src/main/java/pubstatemachine/state/Inactive.java)
+- [`Editable`](src/main/java/pubstatemachine/state/Editable.java)
+- [`GraphicEdit`](src/main/java/pubstatemachine/state/GraphicEdit.java)
+- [`CopyEdit`](src/main/java/pubstatemachine/state/CopyEdit.java)
+- [`AwaitingEdits`](src/main/java/pubstatemachine/state/AwaitingEdits.java)
+- [`Publish`](src/main/java/pubstatemachine/state/Publish.java)
+- [`AwaitingPublish`](src/main/java/pubstatemachine/state/AwaitingPublish.java)
+- [`Published`](src/main/java/pubstatemachine/state/Publish.java)
+
+Once a document has transitioned to the `Published` state, the workflow is complete.
 
 # Running the code:
 
