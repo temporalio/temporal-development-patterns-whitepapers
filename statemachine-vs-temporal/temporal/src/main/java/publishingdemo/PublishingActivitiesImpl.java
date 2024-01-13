@@ -12,12 +12,14 @@ public class PublishingActivitiesImpl implements PublishingActivities {
   @Override
   public void copyEdit(Document document) {
     logger.info(String.format(str, "Copy Edit", document.getId(), document.getUrl(), "COPY EDIT"));
+    logger.info("Copy edit complete");
   }
 
   @Override
   public void graphicEdit(Document document) {
     logger.info(
         String.format(str, "Graphic Edit", document.getId(), document.getUrl(), "GRAPHIC EDIT"));
+    logger.info("Graphic edit complete");
   }
 
   @Override

@@ -8,6 +8,9 @@ import io.temporal.workflow.Promise;
 import io.temporal.workflow.Workflow;
 import io.temporal.workflow.WorkflowQueue;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import publishingdemo.model.Document;
 
@@ -47,32 +50,19 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
   public void startWorkflow(Document document) {
     logger.info("Starting Workflow for Publishing");
     try {
-      Promise<Void> copyEditPromise = Async.procedure(activities::copyEdit, document);
-      Promise<Void> grppicEditPromise = Async.procedure(activities::graphicEdit, document);
-      copyEditPromise.get();
-      grppicEditPromise.get();
+      // Make it so that the copyEdit() and graphicEdit() activities are executed in parallel ...
+      List<Promise<Void>> promisesList = new ArrayList<>();
+      promisesList.add(Async.procedure(activities::copyEdit, document));
+      promisesList.add(Async.procedure(activities::graphicEdit, document));
 
-      if (copyEditPromise.isCompleted()) {
-        logger.info("Copy edit complete");
-        copyEditComplete = true;
-      }
-      if (grppicEditPromise.isCompleted()) {
-        logger.info("Graphic edit complete");
-        graphicEditComplete = true;
-      }
-      // Wait for the flags to be set that indicate that the copyEdit and
-      // graphicEdit activities are complete.
-      Workflow.await(() -> graphicEditComplete && copyEditComplete);
+      Promise.allOf(promisesList)
+              .get();
+
+      // ...then execute the publish() activity
       Promise<Void> publishPromise = Async.procedure(activities::publish, document);
       publishPromise.get();
+      logger.info("Publishing complete");
 
-      if (publishPromise.isCompleted()) {
-        logger.info("Publishing complete");
-        publishingComplete = true;
-      }
-      // Wait for the flags to be set that indicate that the copyEdit,
-      // activities are complete.
-      Workflow.await(() -> copyEditComplete && graphicEditComplete && publishingComplete);
     } catch (ActivityFailure e) {
       throw e;
     }
