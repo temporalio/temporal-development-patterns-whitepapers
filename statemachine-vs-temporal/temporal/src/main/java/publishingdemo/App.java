@@ -75,19 +75,13 @@ public class App {
           WorkflowOptions.newBuilder()
               .setTaskQueue(taskQueue)
               .setWorkflowId(document.getId().toString())
-              // set the retry options
-              .setRetryOptions(
-                  RetryOptions.newBuilder()
-                      .setInitialInterval(Duration.ofSeconds(1))
-                      .setMaximumInterval(Duration.ofSeconds(10))
-                      .build())
               .build();
 
       PublicationWorkflow wf = client.newWorkflowStub(PublicationWorkflow.class, options);
       WorkflowClient.start(wf::startWorkflow, document);
-    } catch (Exception ex) {
+    } catch (Exception e) {
       // Just rethrow for now
-      throw ex;
+      throw e;
     }
   }
 

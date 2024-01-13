@@ -29,7 +29,7 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
   public PublicationWorkflowImpl() {
     ActivityOptions options =
         ActivityOptions.newBuilder()
-            .setScheduleToCloseTimeout(Duration.ofSeconds(10))
+            .setScheduleToCloseTimeout(Duration.ofSeconds(1))
             .setTaskQueue("PublishingDemo")
             .setRetryOptions(
                 RetryOptions.newBuilder()
