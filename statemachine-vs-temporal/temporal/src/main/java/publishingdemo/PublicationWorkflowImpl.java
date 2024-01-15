@@ -10,7 +10,6 @@ import io.temporal.workflow.WorkflowQueue;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import publishingdemo.model.Document;
 
@@ -22,9 +21,6 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
   private final PublishingActivities activities;
   private static final Logger logger = Workflow.getLogger(PublicationWorkflowImpl.class);
   private final WorkflowQueue<Runnable> queue = Workflow.newWorkflowQueue(1024);
-  private boolean copyEditComplete = false;
-  private boolean graphicEditComplete = false;
-  private boolean publishingComplete = false;
 
   public PublicationWorkflowImpl() {
     ActivityOptions options =
@@ -48,20 +44,19 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
    */
   @Override
   public void startWorkflow(Document document) {
-    logger.info("Starting Workflow for Publishing");
+    logger.info("Starting workflow for publishing document: " + document.getUrl());
     try {
       // Make it so that the copyEdit() and graphicEdit() activities are executed in parallel ...
       List<Promise<Void>> promisesList = new ArrayList<>();
       promisesList.add(Async.procedure(activities::copyEdit, document));
       promisesList.add(Async.procedure(activities::graphicEdit, document));
 
-      Promise.allOf(promisesList)
-              .get();
+      Promise.allOf(promisesList).get();
 
       // ...then execute the publish() activity
       Promise<Void> publishPromise = Async.procedure(activities::publish, document);
       publishPromise.get();
-      logger.info("Publishing complete");
+      logger.info("Publishing complete for document: " + document.getUrl());
 
     } catch (ActivityFailure e) {
       throw e;

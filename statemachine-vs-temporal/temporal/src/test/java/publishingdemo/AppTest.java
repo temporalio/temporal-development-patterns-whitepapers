@@ -4,6 +4,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.net.MalformedURLException;
+
 /** Unit test for simple App. */
 public class AppTest extends TestCase {
   /**
@@ -22,15 +24,8 @@ public class AppTest extends TestCase {
     return new TestSuite(AppTest.class);
   }
 
-  public void testHashMap() {
-    // Write a function named functionsHash that takes a list of functions and a hash table as
-    // arguments.
-    // The function should add each function in the list to the hash table using the function's name
-    // as the key.
-
-  }
-
-  public void testApp() {
-    assertTrue(true);
+  // Write a function that runs the code in App.java
+  public void testMainOutput() throws MalformedURLException, InterruptedException {
+    App.main(new String[] {});
   }
 }

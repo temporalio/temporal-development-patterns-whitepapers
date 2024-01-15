@@ -100,7 +100,6 @@ mvn exec:java -Dexec.mainClass="publishingdemo.App"
 You'll see output similar to the following:
 
 ```text                                                                                                                                                                                $ mvn exec:java -Dexec.mainClass="publishingdemo.App"
-$ mvn exec:java -Dexec.mainClass="publishingdemo.App"
 [INFO] Scanning for projects...
 [INFO] 
 [INFO] -------------------------< publishingdemo:app >-------------------------
@@ -109,51 +108,43 @@ $ mvn exec:java -Dexec.mainClass="publishingdemo.App"
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
 [INFO] --- exec:3.1.0:java (default-cli) @ app ---
-Enter the TASK QUEUE name: 
-
-You did not enter a value for TASK QUEUE to we'll use the default value: PublishingDemo
 [publishingdemo.App.main()] INFO io.temporal.serviceclient.WorkflowServiceStubsImpl - Created WorkflowServiceStubs for channel: ManagedChannelOrphanWrapper{delegate=ManagedChannelImpl{logId=1, target=127.0.0.1:7233}}
-[publishingdemo.App.main()] INFO io.temporal.internal.worker.Poller - start: Poller{name=Workflow Poller taskQueue="PublishingDemo", namespace="default", identity=27063@bobs-mac-mini.lan}
-[publishingdemo.App.main()] INFO io.temporal.internal.worker.Poller - start: Poller{name=Activity Poller taskQueue="PublishingDemo", namespace="default", identity=27063@bobs-mac-mini.lan}
+[publishingdemo.App.main()] INFO io.temporal.internal.worker.Poller - start: Poller{name=Workflow Poller taskQueue="PublishingDemo", namespace="default", identity=81488@bobs-mac-mini.lan}
+[publishingdemo.App.main()] INFO io.temporal.internal.worker.Poller - start: Poller{name=Activity Poller taskQueue="PublishingDemo", namespace="default", identity=81488@bobs-mac-mini.lan}
 [publishingdemo.App.main()] INFO publishingdemo.App - The worker has started and is listening on task queue: PublishingDemo.
-Enter 'exit' to exit or any other key to add a new Document URL: 
-
-Enter Document URL: 
-
-You did not enter a value for Document URL so we'll use the default value: https://learn.temporal.io/getting_started/#set-up-your-development-environment
-Enter 'exit' to exit or any other key to add a new Document URL: 
-[workflow-method-33a8c54e-7e82-4cd7-b229-23690a29ff26-ac1fa5e5-caf0-4413-abf0-0ab5426c5d01] INFO publishingdemo.PublicationWorkflowImpl - Starting Workflow for Publishing
-[Activity Executor taskQueue="PublishingDemo", namespace="default": 1] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Copy Edit the document id: 33a8c54e-7e82-4cd7-b229-23690a29ff26 at URL https://learn.temporal.io/getting_started/#set-up-your-development-environment. STARTING COPY EDIT NOW!
-[Activity Executor taskQueue="PublishingDemo", namespace="default": 2] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Graphic Edit the document id: 33a8c54e-7e82-4cd7-b229-23690a29ff26 at URL https://learn.temporal.io/getting_started/#set-up-your-development-environment. STARTING GRAPHIC EDIT NOW!
-[workflow-method-33a8c54e-7e82-4cd7-b229-23690a29ff26-ac1fa5e5-caf0-4413-abf0-0ab5426c5d01] INFO publishingdemo.PublicationWorkflowImpl - Copy edit complete
-[workflow-method-33a8c54e-7e82-4cd7-b229-23690a29ff26-ac1fa5e5-caf0-4413-abf0-0ab5426c5d01] INFO publishingdemo.PublicationWorkflowImpl - Graphic edit complete
-[Activity Executor taskQueue="PublishingDemo", namespace="default": 1] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Publish the document id: 33a8c54e-7e82-4cd7-b229-23690a29ff26 at URL https://learn.temporal.io/getting_started/#set-up-your-development-environment. STARTING PUBLISH NOW!
-[workflow-method-33a8c54e-7e82-4cd7-b229-23690a29ff26-ac1fa5e5-caf0-4413-abf0-0ab5426c5d01] INFO publishingdemo.PublicationWorkflowImpl - Publishing complete
-
-Enter Document URL: 
-https://en.wikipedia.org/wiki/Workflow_pattern     
-Enter 'exit' to exit or any other key to add a new Document URL: 
-[workflow-method-870a4300-3681-4694-a314-7b78563ed928-3a07093e-1551-436a-b0c5-ea7f6cb8bdb7] INFO publishingdemo.PublicationWorkflowImpl - Starting Workflow for Publishing
-[Activity Executor taskQueue="PublishingDemo", namespace="default": 3] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Copy Edit the document id: 870a4300-3681-4694-a314-7b78563ed928 at URL https://en.wikipedia.org/wiki/Workflow_pattern. STARTING COPY EDIT NOW!
-[Activity Executor taskQueue="PublishingDemo", namespace="default": 4] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Graphic Edit the document id: 870a4300-3681-4694-a314-7b78563ed928 at URL https://en.wikipedia.org/wiki/Workflow_pattern. STARTING GRAPHIC EDIT NOW!
-[workflow-method-870a4300-3681-4694-a314-7b78563ed928-3a07093e-1551-436a-b0c5-ea7f6cb8bdb7] INFO publishingdemo.PublicationWorkflowImpl - Copy edit complete
-[workflow-method-870a4300-3681-4694-a314-7b78563ed928-3a07093e-1551-436a-b0c5-ea7f6cb8bdb7] INFO publishingdemo.PublicationWorkflowImpl - Graphic edit complete
-[Activity Executor taskQueue="PublishingDemo", namespace="default": 3] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Publish the document id: 870a4300-3681-4694-a314-7b78563ed928 at URL https://en.wikipedia.org/wiki/Workflow_pattern. STARTING PUBLISH NOW!
-[workflow-method-870a4300-3681-4694-a314-7b78563ed928-3a07093e-1551-436a-b0c5-ea7f6cb8bdb7] INFO publishingdemo.PublicationWorkflowImpl - Publishing complete
-exit
-[publishingdemo.App.main()] INFO io.temporal.worker.WorkerFactory - shutdown: WorkerFactory{identity=27063@bobs-mac-mini.lan}
-[publishingdemo.App.main()] INFO io.temporal.internal.worker.Poller - shutdown: Poller{name=Workflow Poller taskQueue="PublishingDemo", namespace="default", identity=27063@bobs-mac-mini.lan}
+[workflow-method-8f5efbb4-427e-4b08-a4b0-4ef23ae7fc0b-dcacf05f-b8f2-49c5-8eff-fd3f86498da4] INFO publishingdemo.PublicationWorkflowImpl - Starting workflow for publishing document: https://docs.temporal.io/docs/java/hello-world
+[workflow-method-677049bf-abb2-48e8-8826-d1a61f252130-fc7151be-ad26-4cd7-86ba-9bd273639f3d] INFO publishingdemo.PublicationWorkflowImpl - Starting workflow for publishing document: https://docs.temporal.io/docs/server/production-deployment
+[workflow-method-5b2754ce-72ee-4058-883f-a4cc48ccb76f-4eb8682d-428c-4da2-a338-9d0e92b133df] INFO publishingdemo.PublicationWorkflowImpl - Starting workflow for publishing document: https://learn.temporal.io/getting_started/#set-up-your-development-environment
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 2] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Graphic Edit the document id: 8f5efbb4-427e-4b08-a4b0-4ef23ae7fc0b at URL https://docs.temporal.io/docs/java/hello-world. STARTING GRAPHIC EDIT NOW!
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 2] INFO publishingdemo.PublishingActivitiesImpl - Graphic edit complete
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 1] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Graphic Edit the document id: 5b2754ce-72ee-4058-883f-a4cc48ccb76f at URL https://learn.temporal.io/getting_started/#set-up-your-development-environment. STARTING GRAPHIC EDIT NOW!
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 1] INFO publishingdemo.PublishingActivitiesImpl - Graphic edit complete
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 3] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Copy Edit the document id: 5b2754ce-72ee-4058-883f-a4cc48ccb76f at URL https://learn.temporal.io/getting_started/#set-up-your-development-environment. STARTING COPY EDIT NOW!
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 3] INFO publishingdemo.PublishingActivitiesImpl - Copy edit complete
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 4] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Copy Edit the document id: 8f5efbb4-427e-4b08-a4b0-4ef23ae7fc0b at URL https://docs.temporal.io/docs/java/hello-world. STARTING COPY EDIT NOW!
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 4] INFO publishingdemo.PublishingActivitiesImpl - Copy edit complete
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 5] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Copy Edit the document id: 677049bf-abb2-48e8-8826-d1a61f252130 at URL https://docs.temporal.io/docs/server/production-deployment. STARTING COPY EDIT NOW!
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 5] INFO publishingdemo.PublishingActivitiesImpl - Copy edit complete
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 6] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Graphic Edit the document id: 677049bf-abb2-48e8-8826-d1a61f252130 at URL https://docs.temporal.io/docs/server/production-deployment. STARTING GRAPHIC EDIT NOW!
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 6] INFO publishingdemo.PublishingActivitiesImpl - Graphic edit complete
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 3] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Publish the document id: 677049bf-abb2-48e8-8826-d1a61f252130 at URL https://docs.temporal.io/docs/server/production-deployment. STARTING PUBLISH NOW!
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 1] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Publish the document id: 8f5efbb4-427e-4b08-a4b0-4ef23ae7fc0b at URL https://docs.temporal.io/docs/java/hello-world. STARTING PUBLISH NOW!
+[Activity Executor taskQueue="PublishingDemo", namespace="default": 6] INFO publishingdemo.PublishingActivitiesImpl - I am Amazing AI. I have the smarts to Publish the document id: 5b2754ce-72ee-4058-883f-a4cc48ccb76f at URL https://learn.temporal.io/getting_started/#set-up-your-development-environment. STARTING PUBLISH NOW!
+[workflow-method-677049bf-abb2-48e8-8826-d1a61f252130-fc7151be-ad26-4cd7-86ba-9bd273639f3d] INFO publishingdemo.PublicationWorkflowImpl - Publishing complete for document: https://docs.temporal.io/docs/server/production-deployment
+[workflow-method-8f5efbb4-427e-4b08-a4b0-4ef23ae7fc0b-dcacf05f-b8f2-49c5-8eff-fd3f86498da4] INFO publishingdemo.PublicationWorkflowImpl - Publishing complete for document: https://docs.temporal.io/docs/java/hello-world
+[workflow-method-5b2754ce-72ee-4058-883f-a4cc48ccb76f-4eb8682d-428c-4da2-a338-9d0e92b133df] INFO publishingdemo.PublicationWorkflowImpl - Publishing complete for document: https://learn.temporal.io/getting_started/#set-up-your-development-environment
+[publishingdemo.App.main()] INFO io.temporal.worker.WorkerFactory - shutdown: WorkerFactory{identity=81488@bobs-mac-mini.lan}
+[publishingdemo.App.main()] INFO io.temporal.internal.worker.Poller - shutdown: Poller{name=Workflow Poller taskQueue="PublishingDemo", namespace="default", identity=81488@bobs-mac-mini.lan}
 [Workflow Poller taskQueue="PublishingDemo", namespace="default": 1] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
 [Workflow Poller taskQueue="PublishingDemo", namespace="default": 3] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
+[Workflow Poller taskQueue="PublishingDemo", namespace="default": 4] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
 [Workflow Poller taskQueue="PublishingDemo", namespace="default": 5] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
 [Workflow Poller taskQueue="PublishingDemo", namespace="default": 2] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
-[Workflow Poller taskQueue="PublishingDemo", namespace="default": 4] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
-[publishingdemo.App.main()] INFO io.temporal.internal.worker.Poller - shutdown: Poller{name=Activity Poller taskQueue="PublishingDemo", namespace="default", identity=27063@bobs-mac-mini.lan}
+[publishingdemo.App.main()] INFO io.temporal.internal.worker.Poller - shutdown: Poller{name=Activity Poller taskQueue="PublishingDemo", namespace="default", identity=81488@bobs-mac-mini.lan}
+[Activity Poller taskQueue="PublishingDemo", namespace="default": 5] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
+[Activity Poller taskQueue="PublishingDemo", namespace="default": 2] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
 [Activity Poller taskQueue="PublishingDemo", namespace="default": 1] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
 [Activity Poller taskQueue="PublishingDemo", namespace="default": 4] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
 [Activity Poller taskQueue="PublishingDemo", namespace="default": 3] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
-[Activity Poller taskQueue="PublishingDemo", namespace="default": 2] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
-[Activity Poller taskQueue="PublishingDemo", namespace="default": 5] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
 [publishingdemo.App.main()] INFO publishingdemo.App - The worker has been shutdown. That's all folks!
-
 ```
