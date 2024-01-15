@@ -62,7 +62,7 @@ public class App {
                 .setWorkflowId(document.getId().toString())
                 .build();
         PublicationWorkflow wf = client.newWorkflowStub(PublicationWorkflow.class, options);
-        WorkflowClient.start(wf::startWorkflow, document);
+        wf.startWorkflow(document);
       }
     } catch (Exception e) {
       // Just rethrow for now
