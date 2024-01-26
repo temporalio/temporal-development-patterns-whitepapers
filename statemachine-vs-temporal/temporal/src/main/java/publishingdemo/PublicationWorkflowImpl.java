@@ -20,16 +20,14 @@ import publishingdemo.model.Document;
 public class PublicationWorkflowImpl implements PublicationWorkflow {
   private final PublishingActivities activities;
   private static final Logger logger = Workflow.getLogger(PublicationWorkflowImpl.class);
-  private final WorkflowQueue<Runnable> queue = Workflow.newWorkflowQueue(1024);
 
-  public PublicationWorkflowImpl() {
+    public PublicationWorkflowImpl() {
     ActivityOptions options =
         ActivityOptions.newBuilder()
-            .setScheduleToCloseTimeout(Duration.ofSeconds(1))
+            .setStartToCloseTimeout(Duration.ofSeconds(1))
             .setTaskQueue("PublishingDemo")
             .setRetryOptions(
                 RetryOptions.newBuilder()
-                    .setInitialInterval(Duration.ofSeconds(1))
                     .setMaximumAttempts(1)
                     .build())
             .build();
@@ -54,8 +52,7 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
       Promise.allOf(promisesList).get();
 
       // ...then execute the publish() activity
-      Promise<Void> publishPromise = Async.procedure(activities::publish, document);
-      publishPromise.get();
+      activities.publish(document);
       logger.info("Publishing complete for document: " + document.getUrl());
 
     } catch (ActivityFailure e) {

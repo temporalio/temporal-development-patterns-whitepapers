@@ -38,9 +38,7 @@ public class App {
 
     runPublicationProcess(TASK_QUEUE, client);
     //Put the main thread to sleep for 5 seconds so that the workflow can complete
-    Thread.sleep(5000);
     shutdownWorker(factory);
-
   }
 
   /**
