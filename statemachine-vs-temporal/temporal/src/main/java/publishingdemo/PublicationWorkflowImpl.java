@@ -6,7 +6,6 @@ import io.temporal.failure.ActivityFailure;
 import io.temporal.workflow.Async;
 import io.temporal.workflow.Promise;
 import io.temporal.workflow.Workflow;
-import io.temporal.workflow.WorkflowQueue;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +20,12 @@ public class PublicationWorkflowImpl implements PublicationWorkflow {
   private final PublishingActivities activities;
   private static final Logger logger = Workflow.getLogger(PublicationWorkflowImpl.class);
 
-    public PublicationWorkflowImpl() {
+  public PublicationWorkflowImpl() {
     ActivityOptions options =
         ActivityOptions.newBuilder()
             .setStartToCloseTimeout(Duration.ofSeconds(1))
             .setTaskQueue("PublishingDemo")
-            .setRetryOptions(
-                RetryOptions.newBuilder()
-                    .setMaximumAttempts(1)
-                    .build())
+            .setRetryOptions(RetryOptions.newBuilder().setMaximumAttempts(1).build())
             .build();
     this.activities = Workflow.newActivityStub(PublishingActivities.class, options);
   }

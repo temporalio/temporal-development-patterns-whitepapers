@@ -119,7 +119,10 @@
           <version>${spotless.version}</version>
           <configuration>
             <java>
-              <googleJavaFormat/>
+              <google-java-format>
+                <version>1.17.0</version> <!-- Specify the version of the formatter -->
+                <style>GOOGLE</style>
+              </google-java-format>
             </java>
           </configuration>
         </plugin>

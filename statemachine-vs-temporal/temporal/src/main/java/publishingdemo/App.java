@@ -9,7 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import publishingdemo.model.Document;
@@ -37,7 +36,7 @@ public class App {
     WorkerFactory factory = startWorkerWithFactory(client, TASK_QUEUE);
 
     runPublicationProcess(TASK_QUEUE, client);
-    //Put the main thread to sleep for 5 seconds so that the workflow can complete
+    // Put the main thread to sleep for 5 seconds so that the workflow can complete
     shutdownWorker(factory);
   }
 
@@ -46,7 +45,7 @@ public class App {
    * @param client, the workflow client
    * @throws MalformedURLException
    */
-  private static void runPublicationProcess( String taskQueue, WorkflowClient client)
+  private static void runPublicationProcess(String taskQueue, WorkflowClient client)
       throws MalformedURLException {
 
     try {
