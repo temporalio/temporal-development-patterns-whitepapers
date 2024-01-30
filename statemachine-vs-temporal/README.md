@@ -1,9 +1,7 @@
 # Implementing the Principles of State Machines Using the Temporal Java SDK
 
-The purose of this project is compare two approaches to implementing a fictitious document publishing use case. One approach implements the use case as a State Machine written as Maven project programmed in Java.
-The other approach implements the workflow using the [Temporal Java SDK API](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
-
-The differences in approach are illustrated in the diagram below:
+The purpose of this project is compare two approaches to implementing a fictitious document publishing use case. One approach implements the use case as a State Machine written as Maven project programmed in Java.
+The other approach implements the workflow using the [Temporal Java SDK](https://github.com/temporalio/sdk-java). The differences in approach are illustrated in the diagram below:
 
 ![project-comparisons-01](https://github.com/reselbob/publishing-statemachine/assets/1110569/f6ed68aa-2fa3-489d-982c-1f29a19c67f6)
 
@@ -13,7 +11,7 @@ The source code for implementing the workflow in Temporal is [here](./temporal).
 
 There are two key benefits that Temporal provides when compared to a State Machine. The first is that when using Temporal, developers don’t have to spend a lot of time programming the infrastructure for managing the workflow’s initialization and retry behavior; the plumbing to run a workflow is provided by the Temporal framework “out of the box.”
 
-On the other hand, in terms of a State Machine, a developer needs to implement the infrastructure that supports the State machine in addition to programming the controller, events, transitions and commands that make up the State Machine. If the State Machine is message-driven, then the developer needs to implement the message queue(s) and the messages that the queue will support too. This can be significant work, particularly for distributed applications that operate at web scale.  With Temporal, the work is easier. The infrastructure to support a workflow is built in.
+On the other hand, in terms of a State Machine, a developer needs to implement the infrastructure that supports the State machine in addition to programming the controller, events, transitions and commands that make up the State Machine. If the State Machine is message-driven, then the developer needs to implement the message queue(s) and the messages that the queue will support too. This can be significant work, particularly for distributed applications that operate at web scale. With Temporal, the work is easier. The infrastructure to support a workflow is built in.
 
 The second benefit is that Temporal is durable by design.
 

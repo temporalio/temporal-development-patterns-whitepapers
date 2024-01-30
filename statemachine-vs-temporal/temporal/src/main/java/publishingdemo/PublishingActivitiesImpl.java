@@ -1,11 +1,14 @@
 package publishingdemo;
 
-import io.temporal.workflow.Workflow;
+//import io.temporal.workflow.Workflow;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import publishingdemo.model.Document;
 
 public class PublishingActivitiesImpl implements PublishingActivities {
-  private static final Logger logger = Workflow.getLogger(PublishingActivitiesImpl.class);
+
+  //private static final Logger logger = Workflow.getLogger(PublishingActivitiesImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger((PublishingActivitiesImpl.class));
   private final String str =
       "I am Amazing AI. I have the smarts to %s the document id: %s at URL %s. STARTING %s NOW!";
 

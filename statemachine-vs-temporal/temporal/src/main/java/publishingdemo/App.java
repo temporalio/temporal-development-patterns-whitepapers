@@ -48,8 +48,6 @@ public class App {
   private static void runPublicationProcess(String taskQueue, WorkflowClient client)
       throws MalformedURLException {
 
-    try {
-      // Iterate through the list of document URLs and start a workflow for each one
       for (String url : documentUrls) {
         URL docUrl = new URL(url);
         Document document = new Document(docUrl);
@@ -61,10 +59,6 @@ public class App {
         PublicationWorkflow wf = client.newWorkflowStub(PublicationWorkflow.class, options);
         wf.startWorkflow(document);
       }
-    } catch (Exception e) {
-      // Just rethrow for now
-      throw e;
-    }
   }
 
   /**
@@ -98,6 +92,5 @@ public class App {
   private static void shutdownWorker(WorkerFactory factory) {
     factory.shutdown();
     logger.info("The worker has been shutdown. That's all folks!");
-    System.exit(0);
   }
 }
