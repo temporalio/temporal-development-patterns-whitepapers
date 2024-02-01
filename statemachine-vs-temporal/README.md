@@ -3,7 +3,7 @@
 The purpose of this project is compare two approaches to implementing a fictitious document publishing use case. One approach implements the use case as a State Machine written as Maven project programmed in Java.
 The other approach implements the workflow using the [Temporal Java SDK](https://github.com/temporalio/sdk-java). The differences in approach are illustrated in the diagram below:
 
-![project-comparisons-01](https://github.com/reselbob/publishing-statemachine/assets/1110569/f6ed68aa-2fa3-489d-982c-1f29a19c67f6)
+![statemachine-comparison-01](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/39a55be7-9baa-4347-b367-f049f4625f78)
 
 The source code for the State Machine project is [here](./statemachine).
 
