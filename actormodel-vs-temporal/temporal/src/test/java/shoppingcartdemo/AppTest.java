@@ -42,7 +42,8 @@ public class AppTest extends TestCase {
 
   public void testCheckoutInfo() {
     Customer customer = Mocks.getRandomCustomer();
-    CheckoutInfo checkoutInfo = Mocks.getRandomCheckoutInfo(customer, Mocks.getRandomCreditCard(customer));
+    CheckoutInfo checkoutInfo =
+        Mocks.getRandomCheckoutInfo(customer, Mocks.getRandomCreditCard(customer));
     assertNotNull(checkoutInfo);
   }
 
