@@ -8,8 +8,10 @@ public class Product {
   private String id;
   private String name;
 
-  private final PackageSize size;
-  private final double price;
+  private PackageSize size;
+  private double price;
+
+  public Product() {}
 
   public Product(String name, PackageSize size, double price) {
     this.size = size;

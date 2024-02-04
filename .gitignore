@@ -1,3 +1,7 @@
+.idea
+logs
+target
+
 # Compiled class file
 *.class
 

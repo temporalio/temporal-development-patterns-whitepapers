@@ -1,4 +1,4 @@
-package publishingdemo;
+package shoppingcartdemo;
 
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
@@ -6,26 +6,21 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import shoppingcartdemo.model.Customer;
+import shoppingcartdemo.model.PurchaseItem;
+import shoppingcartdemo.utils.Mocks;
 
 public class App {
 
   private static final Logger logger = LoggerFactory.getLogger(App.class);
 
-  // Create a List<String> with three URLs of the documents you want to publish
-  private static final List<String> documentUrls =
-      Arrays.asList(
-          "https://learn.temporal.io/getting_started/#set-up-your-development-environment",
-          "https://docs.temporal.io/docs/java/hello-world",
-          "https://docs.temporal.io/docs/server/production-deployment");
-
   @SuppressWarnings("CatchAndPrintStackTrace")
   public static void main(String[] args) throws MalformedURLException, InterruptedException {
-    String TASK_QUEUE = "PublishingDemo";
+    String TASK_QUEUE = "ShoppingCartDemo";
 
     WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
     // client that can be used to start and signal workflows
@@ -34,9 +29,9 @@ public class App {
     // Start the worker and hold onto the WorkerFactory that created it
     WorkerFactory factory = startWorkerWithFactory(client, TASK_QUEUE);
 
-    runPublicationProcess(TASK_QUEUE, client);
+    runShoppingCartProcess(TASK_QUEUE, client, factory);
     // Put the main thread to sleep for 5 seconds so that the workflow can complete
-    shutdownWorker(factory);
+    // shutdownWorker(factory);
   }
 
   /**
@@ -44,20 +39,31 @@ public class App {
    * @param client, the workflow client
    * @throws MalformedURLException
    */
-  private static void runPublicationProcess(String taskQueue, WorkflowClient client)
-      throws MalformedURLException {
+  private static void runShoppingCartProcess(
+      String taskQueue, WorkflowClient client, WorkerFactory factory) throws MalformedURLException {
 
-    for (String url : documentUrls) {
-      URL docUrl = new URL(url);
-      Document document = new Document(docUrl);
-      WorkflowOptions options =
-          WorkflowOptions.newBuilder()
-              .setTaskQueue(taskQueue)
-              .setWorkflowId(document.getId().toString())
-              .build();
-      PublicationWorkflow wf = client.newWorkflowStub(PublicationWorkflow.class, options);
-      wf.startWorkflow(document);
+    WorkflowOptions options =
+        WorkflowOptions.newBuilder()
+            .setTaskQueue(taskQueue)
+            .setWorkflowId(UUID.randomUUID().toString())
+            .build();
+    ShoppingCartWorkflow wf = client.newWorkflowStub(ShoppingCartWorkflow.class, options);
+    List<PurchaseItem> purchaseItems = Mocks.getRandomPurchaseItems();
+    Customer customer = purchaseItems.get(0).getCustomer();
+
+    WorkflowClient.start(wf::startWorkflow);
+
+    wf.addItems(purchaseItems);
+    wf.checkout(Mocks.getRandomCheckoutInfo(customer, Mocks.getRandomCreditCard(customer)));
+
+    while (!wf.isCompleted()) {
+      try {
+        Thread.sleep(500); // Wait for 500 milliseconds
+      } catch (InterruptedException e) {
+        logger.info(e.getMessage());
+      }
     }
+    shutdownWorker(factory);
   }
 
   /**
@@ -74,8 +80,8 @@ public class App {
     Worker worker = factory.newWorker(taskQueue);
 
     // Workflows are stateful. So you need a type to create instances.
-    worker.registerWorkflowImplementationTypes(PublicationWorkflowImpl.class);
-    worker.registerActivitiesImplementations(new PublishingActivitiesImpl());
+    worker.registerWorkflowImplementationTypes(ShoppingCartWorkflowImpl.class);
+    worker.registerActivitiesImplementations(new ShoppingCartActivitiesImpl());
 
     // Start the worker created by this factory.
     factory.start();

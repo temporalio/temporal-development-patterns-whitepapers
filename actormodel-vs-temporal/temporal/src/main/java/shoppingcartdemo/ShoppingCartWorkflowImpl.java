@@ -2,6 +2,8 @@ package shoppingcartdemo;
 
 import io.temporal.activity.ActivityOptions;
 import io.temporal.common.RetryOptions;
+import io.temporal.workflow.Async;
+import io.temporal.workflow.Promise;
 import io.temporal.workflow.Workflow;
 import io.temporal.workflow.WorkflowQueue;
 import java.time.Duration;
@@ -16,24 +18,37 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   private final ShoppingCartActivities activities;
   private final List<PurchaseItem> purchaseItems = new ArrayList<>();
   private final WorkflowQueue<Runnable> queue = Workflow.newWorkflowQueue(1024);
-  private final boolean exit = false;
+  private boolean exit = false;
+  private boolean payDone = false;
+  private boolean inventoryDone = false;
+  private boolean shipDone = false;
 
   public ShoppingCartWorkflowImpl() {
     ActivityOptions options =
         ActivityOptions.newBuilder()
             .setStartToCloseTimeout(Duration.ofSeconds(1))
-            .setTaskQueue("PublishingDemo")
+            .setTaskQueue("ShoppingCartDemo")
             .setRetryOptions(RetryOptions.newBuilder().setMaximumAttempts(1).build())
             .build();
     this.activities = Workflow.newActivityStub(ShoppingCartActivities.class, options);
   }
 
   @Override
-  public void startWorkflow() {}
+  public void startWorkflow() {
+    logger.info("Shopping cart started");
+    Workflow.await(() -> payDone && inventoryDone && shipDone);
+    logger.info("Shopping cart completed");
+  }
 
   @Override
   public void addItem(PurchaseItem purchaseItem) {
     this.purchaseItems.add(purchaseItem);
+  }
+
+  @Override
+  public void addItems(List<PurchaseItem> purchaseItems) {
+    logger.info("Adding items to the shopping cart");
+    this.purchaseItems.addAll(purchaseItems);
   }
 
   @Override
@@ -49,13 +64,27 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
 
   @Override
   public void checkout(CheckoutInfo checkoutInfo) {
+    logger.info("Checking out the shopping cart");
+
     // Call the activity pay as a Promise
-    activities.pay(this.purchaseItems, checkoutInfo);
+    Promise<Void> pay = Async.procedure(activities::pay, this.purchaseItems, checkoutInfo);
+    pay.get();
+    payDone = true;
 
     // Call the activity getItemsFromInventory as a Promise
-    activities.getItemsFromInventory(this.purchaseItems);
+    Promise<Void> inventory =
+        Async.procedure(activities::getItemsFromInventory, this.purchaseItems);
+    inventory.get();
+    inventoryDone = true;
 
     // Call the activity ship as a Promise
-    activities.ship(this.purchaseItems, checkoutInfo);
+    Promise<Void> ship = Async.procedure(activities::ship, this.purchaseItems, checkoutInfo);
+    ship.get();
+    shipDone = true;
+  }
+
+  @Override
+  public Boolean isCompleted() {
+    return payDone && inventoryDone && shipDone;
   }
 }

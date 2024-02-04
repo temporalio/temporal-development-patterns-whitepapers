@@ -15,6 +15,7 @@ public class ShoppingCartActivitiesImpl implements ShoppingCartActivities {
 
   @Override
   public void pay(List<PurchaseItem> purchaseItems, CheckoutInfo checkoutInfo) {
+
     String info =
         (String.format(str, "pay", purchaseItems.toString() + " " + checkoutInfo.toString()));
     logger.info(info);
@@ -29,7 +30,14 @@ public class ShoppingCartActivitiesImpl implements ShoppingCartActivities {
   @Override
   public void ship(List<PurchaseItem> purchaseItems, CheckoutInfo checkoutInfo) {
     String info =
-        (String.format(str, "ship", purchaseItems.toString() + " " + checkoutInfo.toString()));
+        (String.format(
+            str,
+            "ship",
+            "purchaseItems: "
+                + purchaseItems.toString()
+                + " | "
+                + " checkoutInfo: "
+                + checkoutInfo.toString()));
     logger.info(info);
   }
 }
