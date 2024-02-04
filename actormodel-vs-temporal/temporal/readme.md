@@ -108,22 +108,4 @@ You get output similar to the following:
 [Activity Poller taskQueue="ShoppingCartDemo", namespace="default": 5] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
 [Activity Poller taskQueue="ShoppingCartDemo", namespace="default": 3] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
 [shoppingcartdemo.App.main()] INFO shoppingcartdemo.App - The worker has been shutdown. That's all folks!
-[WARNING] thread Thread[#32,grpc-connection-manager-thread-0,5,shoppingcartdemo.App] was interrupted but is still alive after waiting at least 15000msecs
-[WARNING] thread Thread[#32,grpc-connection-manager-thread-0,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#34,grpc-default-executor-0,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#35,grpc-nio-worker-ELG-1-1,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#36,grpc-nio-worker-ELG-1-2,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#37,grpc-nio-worker-ELG-1-3,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#38,grpc-nio-worker-ELG-1-4,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#44,grpc-nio-worker-ELG-1-5,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#45,grpc-nio-worker-ELG-1-6,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#46,grpc-nio-worker-ELG-1-7,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] thread Thread[#47,grpc-nio-worker-ELG-1-8,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
-[WARNING] NOTE: 10 thread(s) did not finish despite being asked to via interruption. This is not a problem with exec:java, it is a problem with the running code. Although not serious, it should be remedied.
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  16.923 s
-[INFO] Finished at: 2024-02-04T11:13:05-08:00
-[INFO] ------------------------------------------------------------------------
 ```
