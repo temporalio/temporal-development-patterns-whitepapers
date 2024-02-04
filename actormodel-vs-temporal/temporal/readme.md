@@ -71,3 +71,59 @@ In that same terminal window run:
 ```bash
 mvn exec:java -Dexec.mainClass="shoppingcartdemo.App"
 ```
+
+You get output similar to the following:
+
+```text
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< publishingdemo:app >-------------------------
+[INFO] Building app 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.1.0:java (default-cli) @ app ---
+[shoppingcartdemo.App.main()] INFO io.temporal.serviceclient.WorkflowServiceStubsImpl - Created WorkflowServiceStubs for channel: ManagedChannelOrphanWrapper{delegate=ManagedChannelImpl{logId=1, target=127.0.0.1:7233}}
+[shoppingcartdemo.App.main()] INFO io.temporal.internal.worker.Poller - start: Poller{name=Workflow Poller taskQueue="ShoppingCartDemo", namespace="default", identity=23192@bobs-mac-mini.lan}
+[shoppingcartdemo.App.main()] INFO io.temporal.internal.worker.Poller - start: Poller{name=Activity Poller taskQueue="ShoppingCartDemo", namespace="default", identity=23192@bobs-mac-mini.lan}
+[shoppingcartdemo.App.main()] INFO shoppingcartdemo.App - The worker has started and is listening on task queue: ShoppingCartDemo.
+[workflow-method-11f54be4-ed56-4c5d-b7bf-76342bc5fcbb-6158f809-8ef8-4550-a522-9d581cd6d6e9] INFO shoppingcartdemo.ShoppingCartWorkflowImpl - Shopping cart started
+[signal addItems] INFO shoppingcartdemo.ShoppingCartWorkflowImpl - Adding items to the shopping cart
+[signal checkout] INFO shoppingcartdemo.ShoppingCartWorkflowImpl - Checking out the shopping cart
+[Activity Executor taskQueue="ShoppingCartDemo", namespace="default": 1] INFO shoppingcartdemo.ShoppingCartActivitiesImpl - I am Amazing Shopping Cart AI and Robotics. I have the smarts to pay to the Shopping Cart with data: [shoppingcartdemo.model.PurchaseItem@adb6e0f, shoppingcartdemo.model.PurchaseItem@5d2578dd, shoppingcartdemo.model.PurchaseItem@55854c78, shoppingcartdemo.model.PurchaseItem@14b27883, shoppingcartdemo.model.PurchaseItem@4548d70c] shoppingcartdemo.model.CheckoutInfo@33ddbce8
+[Activity Executor taskQueue="ShoppingCartDemo", namespace="default": 1] INFO shoppingcartdemo.ShoppingCartActivitiesImpl - I am Amazing Shopping Cart AI and Robotics. I have the smarts to getItemsFromInventory to the Shopping Cart with data: [shoppingcartdemo.model.PurchaseItem@38aa6b0c, shoppingcartdemo.model.PurchaseItem@400115b2, shoppingcartdemo.model.PurchaseItem@197c37d0, shoppingcartdemo.model.PurchaseItem@5a4eafb9, shoppingcartdemo.model.PurchaseItem@31575df7]
+[Activity Executor taskQueue="ShoppingCartDemo", namespace="default": 1] INFO shoppingcartdemo.ShoppingCartActivitiesImpl - I am Amazing Shopping Cart AI and Robotics. I have the smarts to ship to the Shopping Cart with data: purchaseItems: [shoppingcartdemo.model.PurchaseItem@2e954c44, shoppingcartdemo.model.PurchaseItem@25261484, shoppingcartdemo.model.PurchaseItem@47e006f8, shoppingcartdemo.model.PurchaseItem@ee512ef, shoppingcartdemo.model.PurchaseItem@a96981b] |  checkoutInfo: shoppingcartdemo.model.CheckoutInfo@1f012ff9
+[workflow-method-11f54be4-ed56-4c5d-b7bf-76342bc5fcbb-6158f809-8ef8-4550-a522-9d581cd6d6e9] INFO shoppingcartdemo.ShoppingCartWorkflowImpl - Shopping cart completed
+[shoppingcartdemo.App.main()] INFO io.temporal.worker.WorkerFactory - shutdown: WorkerFactory{identity=23192@bobs-mac-mini.lan}
+[shoppingcartdemo.App.main()] INFO io.temporal.internal.worker.Poller - shutdown: Poller{name=Workflow Poller taskQueue="ShoppingCartDemo", namespace="default", identity=23192@bobs-mac-mini.lan}
+[Workflow Poller taskQueue="ShoppingCartDemo", namespace="default": 2] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
+[Workflow Poller taskQueue="ShoppingCartDemo", namespace="default": 1] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
+[Workflow Poller taskQueue="ShoppingCartDemo", namespace="default": 5] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
+[Workflow Poller taskQueue="ShoppingCartDemo", namespace="default": 4] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
+[Workflow Poller taskQueue="ShoppingCartDemo", namespace="default": 3] INFO io.temporal.internal.worker.Poller - poll loop is terminated: WorkflowPollTask
+[shoppingcartdemo.App.main()] INFO io.temporal.internal.worker.Poller - shutdown: Poller{name=Activity Poller taskQueue="ShoppingCartDemo", namespace="default", identity=23192@bobs-mac-mini.lan}
+[Activity Poller taskQueue="ShoppingCartDemo", namespace="default": 1] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
+[Activity Poller taskQueue="ShoppingCartDemo", namespace="default": 2] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
+[Activity Poller taskQueue="ShoppingCartDemo", namespace="default": 4] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
+[Activity Poller taskQueue="ShoppingCartDemo", namespace="default": 5] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
+[Activity Poller taskQueue="ShoppingCartDemo", namespace="default": 3] INFO io.temporal.internal.worker.Poller - poll loop is terminated: ActivityPollTask
+[shoppingcartdemo.App.main()] INFO shoppingcartdemo.App - The worker has been shutdown. That's all folks!
+[WARNING] thread Thread[#32,grpc-connection-manager-thread-0,5,shoppingcartdemo.App] was interrupted but is still alive after waiting at least 15000msecs
+[WARNING] thread Thread[#32,grpc-connection-manager-thread-0,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#34,grpc-default-executor-0,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#35,grpc-nio-worker-ELG-1-1,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#36,grpc-nio-worker-ELG-1-2,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#37,grpc-nio-worker-ELG-1-3,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#38,grpc-nio-worker-ELG-1-4,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#44,grpc-nio-worker-ELG-1-5,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#45,grpc-nio-worker-ELG-1-6,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#46,grpc-nio-worker-ELG-1-7,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] thread Thread[#47,grpc-nio-worker-ELG-1-8,5,shoppingcartdemo.App] will linger despite being asked to die via interruption
+[WARNING] NOTE: 10 thread(s) did not finish despite being asked to via interruption. This is not a problem with exec:java, it is a problem with the running code. Although not serious, it should be remedied.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  16.923 s
+[INFO] Finished at: 2024-02-04T11:13:05-08:00
+[INFO] ------------------------------------------------------------------------
+```
