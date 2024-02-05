@@ -1,9 +1,6 @@
 package shoppingcartdemo;
 
-import io.temporal.workflow.QueryMethod;
-import io.temporal.workflow.SignalMethod;
-import io.temporal.workflow.WorkflowInterface;
-import io.temporal.workflow.WorkflowMethod;
+import io.temporal.workflow.*;
 import java.util.List;
 import shoppingcartdemo.model.CheckoutInfo;
 import shoppingcartdemo.model.PurchaseItem;
@@ -14,16 +11,22 @@ public interface ShoppingCartWorkflow {
   @WorkflowMethod
   void startWorkflow();
 
-  @SignalMethod
+  @UpdateMethod
   void addItem(PurchaseItem purchaseItem);
 
-  @SignalMethod
+  @UpdateValidatorMethod(updateName = "addItem")
+  void addItemValidator(PurchaseItem purchaseItem);
+
+  @UpdateMethod
   void addItems(List<PurchaseItem> purchaseItems);
 
-  @SignalMethod
+  @UpdateValidatorMethod(updateName = "addItems")
+  void addItemsValidator(List<PurchaseItem> purchaseItems);
+
+  @UpdateMethod
   void removeItem(PurchaseItem purchaseItem);
 
-  @SignalMethod
+  @UpdateMethod
   void emptyCart();
 
   @SignalMethod

@@ -46,9 +46,27 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   }
 
   @Override
+  public void addItemValidator(PurchaseItem purchaseItem) {
+    if (purchaseItem.getQuantity() < 0) {
+      throw new IllegalArgumentException("Quantity cannot be negative");
+    }
+    this.isInInventory(purchaseItem);
+  }
+
+  @Override
   public void addItems(List<PurchaseItem> purchaseItems) {
     logger.info("Adding items to the shopping cart");
     this.purchaseItems.addAll(purchaseItems);
+  }
+
+  @Override
+  public void addItemsValidator(List<PurchaseItem> purchaseItems) {
+    for (PurchaseItem purchaseItem : purchaseItems) {
+      if (purchaseItem.getQuantity() < 0) {
+        throw new IllegalArgumentException("Quantity cannot be negative");
+      }
+      this.isInInventory(purchaseItem);
+    }
   }
 
   @Override
@@ -86,5 +104,13 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   @Override
   public Boolean isCompleted() {
     return payDone && inventoryDone && shipDone;
+  }
+
+  private void isInInventory(PurchaseItem purchaseItem) {
+    String formattedString =
+        String.format(
+            "Checking that %d items named %s are in stock.",
+            purchaseItem.getQuantity(), purchaseItem.getProduct().getName());
+    logger.info(formattedString);
   }
 }
