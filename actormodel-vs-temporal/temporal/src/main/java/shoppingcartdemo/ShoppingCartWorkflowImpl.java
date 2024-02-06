@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
+import shoppingcartdemo.errors.OutOfStockException;
 import shoppingcartdemo.model.CheckoutInfo;
 import shoppingcartdemo.model.PurchaseItem;
 
@@ -18,7 +19,6 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   private final ShoppingCartActivities activities;
   private final List<PurchaseItem> purchaseItems = new ArrayList<>();
   private final WorkflowQueue<Runnable> queue = Workflow.newWorkflowQueue(1024);
-  private boolean exit = false;
   private boolean payDone = false;
   private boolean inventoryDone = false;
   private boolean shipDone = false;
@@ -109,8 +109,13 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   private void isInInventory(PurchaseItem purchaseItem) {
     String formattedString =
         String.format(
-            "Checking that %d items named %s are in stock.",
-            purchaseItem.getQuantity(), purchaseItem.getProduct().getName());
+            "Checking that %d items named %s of package size %s are in stock.",
+            purchaseItem.getQuantity(), purchaseItem.getProduct().getName(), purchaseItem.getProduct().getSize());
     logger.info(formattedString);
+    String outOfStockItem = "Salted Peanuts";
+    if  (purchaseItem.getProduct().getName().equals(outOfStockItem)) {
+      logger.info(outOfStockItem + " is out of stock! But, we'll ship the rest of the items anyway and back order the " + outOfStockItem + ".");
+      throw new OutOfStockException(outOfStockItem + " is out of stock!");
+    }
   }
 }

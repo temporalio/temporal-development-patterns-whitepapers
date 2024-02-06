@@ -8,6 +8,8 @@ import io.temporal.worker.WorkerFactory;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.UUID;
+
+import io.temporal.workflow.Workflow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import shoppingcartdemo.model.Customer;

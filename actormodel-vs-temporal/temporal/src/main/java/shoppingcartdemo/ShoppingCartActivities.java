@@ -16,4 +16,5 @@ public interface ShoppingCartActivities {
 
   @ActivityMethod
   void ship(List<PurchaseItem> purchaseItems, CheckoutInfo checkoutInfo);
+
 }

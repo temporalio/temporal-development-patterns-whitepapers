@@ -40,4 +40,5 @@ public class ShoppingCartActivitiesImpl implements ShoppingCartActivities {
                 + checkoutInfo.toString()));
     logger.info(info);
   }
+
 }
