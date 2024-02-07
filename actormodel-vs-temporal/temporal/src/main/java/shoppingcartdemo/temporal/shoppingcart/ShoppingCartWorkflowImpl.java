@@ -1,4 +1,4 @@
-package shoppingcartdemo.temporal;
+package shoppingcartdemo.temporal.shoppingcart;
 
 import com.google.gson.Gson;
 import io.temporal.activity.ActivityOptions;
@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
-import shoppingcartdemo.exceptions.OutOfStockException;
+import shoppingcartdemo.Constants;
 import shoppingcartdemo.model.CheckoutInfo;
 import shoppingcartdemo.model.PurchaseItem;
 
@@ -29,7 +29,7 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
     ActivityOptions options =
         ActivityOptions.newBuilder()
             .setStartToCloseTimeout(Duration.ofSeconds(1))
-            .setTaskQueue("ShoppingCartDemo")
+            .setTaskQueue(Constants.SHOPPING_CART_TASK_QUEUE)
             .setRetryOptions(RetryOptions.newBuilder().setMaximumAttempts(1).build())
             .build();
     this.activities = Workflow.newActivityStub(ShoppingCartActivities.class, options);
@@ -42,21 +42,6 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
     logger.info("Shopping cart completed");
   }
 
-  @Override
-  public void addItem(PurchaseItem purchaseItem) {
-    if (!this.isInInventory(purchaseItem)) {
-      throw new OutOfStockException(purchaseItem);
-    }
-    this.purchaseItems.add(purchaseItem);
-  }
-
-  @Override
-  public void addItemValidator(PurchaseItem purchaseItem) {
-    if (purchaseItem.getQuantity() < 0) {
-      throw new IllegalArgumentException("Quantity cannot be negative");
-    }
-    this.isInInventory(purchaseItem);
-  }
 
   @Override
   public void addItems(List<PurchaseItem> purchaseItems) {
@@ -98,12 +83,6 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   public void emptyCart() {
     // Empty the list of purchase items
     this.purchaseItems.clear();
-  }
-
-  @Override
-  public void backorder(List<PurchaseItem> purchaseItems) {
-    Promise<Void> backorder = Async.procedure(activities::backorder, purchaseItems);
-    backorder.get();
   }
 
   @Override
