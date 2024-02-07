@@ -1,7 +1,9 @@
-package shoppingcartdemo;
+package shoppingcartdemo.temporal;
 
+import com.google.gson.Gson;
 import io.temporal.activity.ActivityOptions;
 import io.temporal.common.RetryOptions;
+import io.temporal.failure.ApplicationFailure;
 import io.temporal.workflow.Async;
 import io.temporal.workflow.Promise;
 import io.temporal.workflow.Workflow;
@@ -10,7 +12,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
-import shoppingcartdemo.errors.OutOfStockException;
+import shoppingcartdemo.exceptions.OutOfStockException;
 import shoppingcartdemo.model.CheckoutInfo;
 import shoppingcartdemo.model.PurchaseItem;
 
@@ -42,6 +44,9 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
 
   @Override
   public void addItem(PurchaseItem purchaseItem) {
+    if (!this.isInInventory(purchaseItem)) {
+      throw new OutOfStockException(purchaseItem);
+    }
     this.purchaseItems.add(purchaseItem);
   }
 
@@ -55,17 +60,32 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
 
   @Override
   public void addItems(List<PurchaseItem> purchaseItems) {
-    logger.info("Adding items to the shopping cart");
-    this.purchaseItems.addAll(purchaseItems);
-  }
-
-  @Override
-  public void addItemsValidator(List<PurchaseItem> purchaseItems) {
+    List<PurchaseItem> badItems = new ArrayList<>();
+    List<PurchaseItem> goodItems = new ArrayList<>();
     for (PurchaseItem purchaseItem : purchaseItems) {
-      if (purchaseItem.getQuantity() < 0) {
-        throw new IllegalArgumentException("Quantity cannot be negative");
+      if (this.isInInventory(purchaseItem)) {
+        logger.info(
+            "Adding item "
+                + purchaseItem.getProduct().getName()
+                + " "
+                + purchaseItem.getProduct().getSize()
+                + " to the shopping cart");
+        goodItems.add(purchaseItem);
+      } else {
+        logger.info(
+            "Out Of Stock "
+                + purchaseItem.getProduct().getName()
+                + " "
+                + purchaseItem.getProduct().getSize()
+                + ".");
+        badItems.add(purchaseItem);
       }
-      this.isInInventory(purchaseItem);
+    }
+    this.purchaseItems.addAll(goodItems);
+    if (!badItems.isEmpty()) {
+      Gson gson = new Gson();
+      String json = gson.toJson(badItems);
+      throw ApplicationFailure.newFailure(json, "OutOfStockException");
     }
   }
 
@@ -78,6 +98,12 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   public void emptyCart() {
     // Empty the list of purchase items
     this.purchaseItems.clear();
+  }
+
+  @Override
+  public void backorder(List<PurchaseItem> purchaseItems) {
+    Promise<Void> backorder = Async.procedure(activities::backorder, purchaseItems);
+    backorder.get();
   }
 
   @Override
@@ -106,16 +132,20 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
     return payDone && inventoryDone && shipDone;
   }
 
-  private void isInInventory(PurchaseItem purchaseItem) {
-    String formattedString =
-        String.format(
-            "Checking that %d items named %s of package size %s are in stock.",
-            purchaseItem.getQuantity(), purchaseItem.getProduct().getName(), purchaseItem.getProduct().getSize());
-    logger.info(formattedString);
+  private boolean isInInventory(PurchaseItem purchaseItem) {
     String outOfStockItem = "Salted Peanuts";
-    if  (purchaseItem.getProduct().getName().equals(outOfStockItem)) {
-      logger.info(outOfStockItem + " is out of stock! But, we'll ship the rest of the items anyway and back order the " + outOfStockItem + ".");
-      throw new OutOfStockException(outOfStockItem + " is out of stock!");
+    return !purchaseItem.getProduct().getName().equals(outOfStockItem);
+  }
+
+  private String createExceptionMessage(List<PurchaseItem> purchaseItems) {
+    StringBuilder messageBuilder = new StringBuilder("The following items are out of stock:");
+    for (PurchaseItem purchaseItem : purchaseItems) {
+      messageBuilder
+          .append("\n - ")
+          .append(purchaseItem.getProduct().getName())
+          .append(" ")
+          .append(purchaseItem.getProduct().getSize());
     }
+    return messageBuilder.toString();
   }
 }

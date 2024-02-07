@@ -1,19 +1,25 @@
 package shoppingcartdemo;
 
+import com.google.common.base.Throwables;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
+import io.temporal.client.WorkflowUpdateException;
+import io.temporal.failure.ApplicationFailure;
 import io.temporal.serviceclient.WorkflowServiceStubs;
-import io.temporal.worker.Worker;
-import io.temporal.worker.WorkerFactory;
+
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.UUID;
-
-import io.temporal.workflow.Workflow;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import shoppingcartdemo.model.Customer;
 import shoppingcartdemo.model.PurchaseItem;
+import shoppingcartdemo.temporal.ShoppingCartWorkflow;
 import shoppingcartdemo.utils.Mocks;
 
 public class App {
@@ -21,41 +27,35 @@ public class App {
   private static final Logger logger = LoggerFactory.getLogger(App.class);
 
   @SuppressWarnings("CatchAndPrintStackTrace")
-  public static void main(String[] args) throws MalformedURLException, InterruptedException {
-    String TASK_QUEUE = "ShoppingCartDemo";
+  public static void main(String[] args) throws MalformedURLException {
+    logger.info("Starting the Shopping Cart Demo to TASK_QUEUE" + Constants.TASK_QUEUE);
 
     WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
     // client that can be used to start and signal workflows
     WorkflowClient client = WorkflowClient.newInstance(service);
 
-    // Start the worker and hold onto the WorkerFactory that created it
-    WorkerFactory factory = startWorkerWithFactory(client, TASK_QUEUE);
-
-    runShoppingCartProcess(TASK_QUEUE, client, factory);
-    // Put the main thread to sleep for 5 seconds so that the workflow can complete
-    // shutdownWorker(factory);
-  }
-
-  /**
-   * @param taskQueue, the task queue to listen on
-   * @param client, the workflow client
-   * @throws MalformedURLException
-   */
-  private static void runShoppingCartProcess(
-      String taskQueue, WorkflowClient client, WorkerFactory factory) throws MalformedURLException {
-
     WorkflowOptions options =
         WorkflowOptions.newBuilder()
-            .setTaskQueue(taskQueue)
+            .setTaskQueue(Constants.TASK_QUEUE)
             .setWorkflowId(UUID.randomUUID().toString())
             .build();
     ShoppingCartWorkflow wf = client.newWorkflowStub(ShoppingCartWorkflow.class, options);
     List<PurchaseItem> purchaseItems = Mocks.getRandomPurchaseItems();
     Customer customer = purchaseItems.get(0).getCustomer();
-
     WorkflowClient.start(wf::startWorkflow);
 
-    wf.addItems(purchaseItems);
+    try {
+      wf.addItems(purchaseItems);
+    } catch (WorkflowUpdateException e) {
+      // Throwable cause = Throwables.getRootCause(e);
+      String exceptionString = ((ApplicationFailure) e.getCause()).getMessage();
+
+      List<PurchaseItem> items = getPurchaseItemsFromException(exceptionString);
+      wf.backorder(items);
+
+      // logger.info("\n Update failed, root cause: " + cause.getMessage());
+    }
+
     wf.checkout(Mocks.getRandomCheckoutInfo(customer, Mocks.getRandomCreditCard(customer)));
 
     while (!wf.isCompleted()) {
@@ -65,39 +65,30 @@ public class App {
         logger.info(e.getMessage());
       }
     }
-    shutdownWorker(factory);
   }
 
-  /**
-   * @param client, the workflow client
-   * @param taskQueue, the task queue to listen on
-   * @return, the WorkerFactory that created the worker
-   */
-  private static WorkerFactory startWorkerWithFactory(WorkflowClient client, String taskQueue) {
-    // worker factory that can be used to create workers for specific task queues
-    WorkerFactory factory = WorkerFactory.newInstance(client);
-
-    // Worker that listens on a task queue and hosts both workflow and activity
-    // implementations.
-    Worker worker = factory.newWorker(taskQueue);
-
-    // Workflows are stateful. So you need a type to create instances.
-    worker.registerWorkflowImplementationTypes(ShoppingCartWorkflowImpl.class);
-    worker.registerActivitiesImplementations(new ShoppingCartActivitiesImpl());
-
-    // Start the worker created by this factory.
-    factory.start();
-
-    logger.info("The worker has started and is listening on task queue: {}.", taskQueue);
-
-    return factory;
+  static private List<PurchaseItem> getPurchaseItemsFromException(String inputString) {
+    String jsonString = getJsonString(inputString);
+    Type purchaseItemType = new TypeToken<List<PurchaseItem>>() {}.getType();
+    List<PurchaseItem> items = new Gson().fromJson(jsonString, purchaseItemType);
+    return items;
   }
 
-  /**
-   * @param factory, the WorkerFactory that created the worker
-   */
-  private static void shutdownWorker(WorkerFactory factory) {
-    factory.shutdown();
-    logger.info("The worker has been shutdown. That's all folks!");
+  static private String getJsonString(String inputString) {
+    // Define the regex pattern
+    String regexPattern = "message='(.*?)'";
+
+    // Create a Pattern object
+    Pattern pattern = Pattern.compile(regexPattern);
+
+    // Create a Matcher object
+    Matcher matcher = pattern.matcher(inputString);
+
+    // Find the match and print the result
+    if (matcher.find()) {
+      return matcher.group(1).trim();
+    }
+
+    return null;
   }
 }

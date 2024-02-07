@@ -1,4 +1,4 @@
-package shoppingcartdemo;
+package shoppingcartdemo.temporal;
 
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
@@ -17,4 +17,6 @@ public interface ShoppingCartActivities {
   @ActivityMethod
   void ship(List<PurchaseItem> purchaseItems, CheckoutInfo checkoutInfo);
 
+  @ActivityMethod
+  void backorder(List<PurchaseItem> purchaseItems);
 }
