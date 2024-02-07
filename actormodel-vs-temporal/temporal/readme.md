@@ -1,5 +1,8 @@
 # Adapting the Actor Model to a Temporal Workflow
 
+![temporal-shop-backorder-01](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/d59dad5a-c0b1-49cf-b3db-cb6c1692d80c)
+
+
 # Running the code:
 
 The [Java Virtual Machine](https://openjdk.org/) and [Maven](https://maven.apache.org/install.html) need to be installed
