@@ -11,11 +11,8 @@ public interface ShoppingCartWorkflow {
   @WorkflowMethod
   void startWorkflow();
 
-
   @UpdateMethod
   void addItems(List<PurchaseItem> purchaseItems);
-
-
 
   @UpdateMethod
   void removeItem(PurchaseItem purchaseItem);

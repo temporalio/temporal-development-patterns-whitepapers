@@ -2,6 +2,7 @@ package shoppingcartdemo.temporal.backorder;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.lang.reflect.Type;
 import java.util.List;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ public class BackorderActivitiesImpl implements BackorderActivities {
   @Override
   public void backorder(List<PurchaseItem> purchaseItems) {
     // Create a Gson instance
-    Gson gson = new Gson();
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     // Define the type of the list
     Type listType = new TypeToken<List<PurchaseItem>>() {}.getType();

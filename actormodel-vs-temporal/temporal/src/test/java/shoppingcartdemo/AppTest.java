@@ -1,3 +1,5 @@
+package shoppingcartdemo;
+
 import java.net.MalformedURLException;
 import java.util.List;
 import junit.framework.Test;
@@ -45,6 +47,25 @@ public class AppTest extends TestCase {
     CheckoutInfo checkoutInfo =
         Mocks.getRandomCheckoutInfo(customer, Mocks.getRandomCreditCard(customer));
     assertNotNull(checkoutInfo);
+  }
+
+  public void testWorkerRunnerAndApp() throws Exception {
+    // Start the App class in a separate thread
+    Thread workerThread =
+        new Thread(
+            () -> {
+              shoppingcartdemo.WorkerRunner.main(new String[] {});
+            });
+    workerThread.start();
+
+    // Wait for the App to start
+    Thread.sleep(1000); // Adjust this wait time as needed
+
+    // Run the WorkerRunner class
+    shoppingcartdemo.App.main(new String[] {});
+
+    // Stop the App
+    workerThread.interrupt();
   }
 
   // write a function that tests the getRandomPurchaseItem function in Mocks.java

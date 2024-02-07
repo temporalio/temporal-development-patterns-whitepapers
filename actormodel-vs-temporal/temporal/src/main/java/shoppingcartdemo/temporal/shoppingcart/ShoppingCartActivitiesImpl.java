@@ -1,5 +1,7 @@
 package shoppingcartdemo.temporal.shoppingcart;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,10 @@ public class ShoppingCartActivitiesImpl implements ShoppingCartActivities {
 
   @Override
   public void getItemsFromInventory(List<PurchaseItem> purchaseItems) {
-    String info = (String.format(str, "getItemsFromInventory", purchaseItems.toString()));
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    String json = gson.toJson(purchaseItems);
+
+    String info = (String.format(str, "getItemsFromInventory", json));
     logger.info(info);
   }
 

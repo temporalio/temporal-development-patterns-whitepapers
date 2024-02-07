@@ -20,7 +20,6 @@ import shoppingcartdemo.temporal.shoppingcart.ShoppingCartWorkflow;
 import shoppingcartdemo.utils.Mocks;
 
 public class App {
-
   private static final Logger logger = LoggerFactory.getLogger(App.class);
 
   @SuppressWarnings("CatchAndPrintStackTrace")
@@ -61,9 +60,7 @@ public class App {
       BackorderWorkflow backorderWorkflow =
           client.newWorkflowStub(BackorderWorkflow.class, backorderOptions);
 
-      logger.info(
-              "Starting the Backorder bound to Task Queue: "
-                      + Constants.BACKORDER_TASK_QUEUE);
+      logger.info("Starting the Backorder bound to Task Queue: " + Constants.BACKORDER_TASK_QUEUE);
 
       WorkflowClient.start(backorderWorkflow::startWorkflow);
       backorderWorkflow.backorder(items);

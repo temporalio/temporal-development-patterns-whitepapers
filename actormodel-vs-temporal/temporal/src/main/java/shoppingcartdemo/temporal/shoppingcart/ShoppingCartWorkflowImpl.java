@@ -42,7 +42,6 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
     logger.info("Shopping cart completed");
   }
 
-
   @Override
   public void addItems(List<PurchaseItem> purchaseItems) {
     List<PurchaseItem> badItems = new ArrayList<>();
