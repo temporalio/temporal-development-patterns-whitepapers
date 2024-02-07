@@ -26,7 +26,7 @@ public class App {
   @SuppressWarnings("CatchAndPrintStackTrace")
   public static void main(String[] args) {
     logger.info(
-        "Starting the Shopping Cart Demo to SHOPPING_CART_TASK_QUEUE"
+        "Starting the Shopping Cart Demo bound to Task Queue: "
             + Constants.SHOPPING_CART_TASK_QUEUE);
 
     WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
@@ -60,6 +60,11 @@ public class App {
               .build();
       BackorderWorkflow backorderWorkflow =
           client.newWorkflowStub(BackorderWorkflow.class, backorderOptions);
+
+      logger.info(
+              "Starting the Backorder bound to Task Queue: "
+                      + Constants.BACKORDER_TASK_QUEUE);
+
       WorkflowClient.start(backorderWorkflow::startWorkflow);
       backorderWorkflow.backorder(items);
     }
