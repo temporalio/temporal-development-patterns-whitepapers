@@ -7,7 +7,6 @@ import io.temporal.failure.ApplicationFailure;
 import io.temporal.workflow.Async;
 import io.temporal.workflow.Promise;
 import io.temporal.workflow.Workflow;
-import io.temporal.workflow.WorkflowQueue;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   private static final Logger logger = Workflow.getLogger(ShoppingCartWorkflowImpl.class);
   private final ShoppingCartActivities activities;
   private final List<PurchaseItem> purchaseItems = new ArrayList<>();
-  private final WorkflowQueue<Runnable> queue = Workflow.newWorkflowQueue(1024);
   private boolean payDone = false;
   private boolean inventoryDone = false;
   private boolean shipDone = false;
@@ -113,17 +111,5 @@ public class ShoppingCartWorkflowImpl implements ShoppingCartWorkflow {
   private boolean isInInventory(PurchaseItem purchaseItem) {
     String outOfStockItem = "Salted Peanuts";
     return !purchaseItem.getProduct().getName().equals(outOfStockItem);
-  }
-
-  private String createExceptionMessage(List<PurchaseItem> purchaseItems) {
-    StringBuilder messageBuilder = new StringBuilder("The following items are out of stock:");
-    for (PurchaseItem purchaseItem : purchaseItems) {
-      messageBuilder
-          .append("\n - ")
-          .append(purchaseItem.getProduct().getName())
-          .append(" ")
-          .append(purchaseItem.getProduct().getSize());
-    }
-    return messageBuilder.toString();
   }
 }

@@ -15,21 +15,16 @@ public class WorkerRunner {
   private static final Logger logger = LoggerFactory.getLogger(WorkerRunner.class);
 
   public static void main(String[] args) {
-
-    // String hostSpecificTaskQueue = ManagementFactory.getRuntimeMXBean().getName();
-
     // gRPC stubs wrapper that talks to the local docker instance of temporal service.
     WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
     // client that can be used to start and signal workflows
     WorkflowClient client = WorkflowClient.newInstance(service);
-
     // worker factory that can be used to create workers for specific task queues
     WorkerFactory factory = WorkerFactory.newInstance(client);
 
     Worker shoppingcartWorker = factory.newWorker(Constants.SHOPPING_CART_TASK_QUEUE);
     Worker backorderWorker = factory.newWorker(Constants.BACKORDER_TASK_QUEUE);
 
-    // Workflows are stateful. So you need a type to create instances.
     shoppingcartWorker.registerWorkflowImplementationTypes(ShoppingCartWorkflowImpl.class);
     shoppingcartWorker.registerActivitiesImplementations(new ShoppingCartActivitiesImpl());
 
@@ -44,10 +39,7 @@ public class WorkerRunner {
         "The Backorder Worker has started and is listening on task queue: {}.",
         Constants.BACKORDER_TASK_QUEUE);
 
-    // Start the worker created by this factory.
-    factory.start();
-
-    // Start all work
+    // Start the workers created by this factory.
     factory.start();
   }
 }

@@ -50,7 +50,6 @@ public class App {
       String exceptionString = e.getCause().getMessage();
 
       List<PurchaseItem> items = getPurchaseItemsFromException(exceptionString);
-      // shoppingCartWorkflow.backorder(items);
 
       WorkflowOptions backorderOptions =
           WorkflowOptions.newBuilder()
@@ -87,18 +86,14 @@ public class App {
   private static String getJsonString(String inputString) {
     // Define the regex pattern
     String regexPattern = "message='(.*?)'";
-
     // Create a Pattern object
     Pattern pattern = Pattern.compile(regexPattern);
-
     // Create a Matcher object
     Matcher matcher = pattern.matcher(inputString);
-
     // Find the match and print the result
     if (matcher.find()) {
       return matcher.group(1).trim();
     }
-
     return null;
   }
 }

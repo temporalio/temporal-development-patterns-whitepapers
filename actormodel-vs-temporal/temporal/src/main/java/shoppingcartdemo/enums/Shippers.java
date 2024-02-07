@@ -13,7 +13,6 @@ public enum Shippers {
   public static String getRandomShipper() {
     // Get a random enum value
     Shippers randomShipper = values()[random.nextInt(values().length)];
-
     // Return its string name
     return randomShipper.name();
   }

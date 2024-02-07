@@ -8,7 +8,6 @@ import shoppingcartdemo.model.PurchaseItem;
 
 @WorkflowInterface
 public interface BackorderWorkflow {
-
   @WorkflowMethod
   void startWorkflow();
 

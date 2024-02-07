@@ -14,7 +14,6 @@ import shoppingcartdemo.model.PurchaseItem;
 public class BackorderWorkflowImpl implements BackorderWorkflow {
   private static final Logger logger = Workflow.getLogger(BackorderWorkflowImpl.class);
   private final BackorderActivities activities;
-
   private boolean backorderDone = false;
 
   public BackorderWorkflowImpl() {
