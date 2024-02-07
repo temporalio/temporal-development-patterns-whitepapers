@@ -117,7 +117,9 @@ You get output similar to the following:
 
 ```
 
-## (7) View the results in the Temporal Web Console at `http://localhost:8233`
+## (7) View the results in the Temporal Web Console
+
+In your browser, go to: `http://localhost:8233`
 
 
 
