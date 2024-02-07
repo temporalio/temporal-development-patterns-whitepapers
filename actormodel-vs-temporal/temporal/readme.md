@@ -121,6 +121,7 @@ You get output similar to the following:
 
 In your browser, go to: `http://localhost:8233`
 
+![Screenshot 2024-02-07 at 11 05 15 AM](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/feb73692-507a-435a-900c-651c14a37b5c)
 
 
 
