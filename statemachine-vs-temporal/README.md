@@ -5,7 +5,7 @@ The other approach implements the workflow using the [Temporal Java SDK](https:/
 
 ![generic-workflow-01](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/462e7e65-dfcb-4527-b9cf-4b689339bf06)
 
-A document intended for publishing is submitted for processing. The document goes through two phases, Graphic Edit and Copy Edit simultaneously. Then when both phases complete the document is passed on for publication.
+A document intended for publishing is submitted for processing. The document goes through two phases, Graphic Edit and Copy Edit, simultaneously. Then, when both phases complete the document is passed on for publication.
 
 The source code for the State Machine project is [here](./statemachine).
 
