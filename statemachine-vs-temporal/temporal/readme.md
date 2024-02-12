@@ -10,7 +10,7 @@ The workflow has three activities:
 
 The Copy Edit and Graphic Edit activities execute concurrently. Upon completion of both activities, the Publish activity executes as illustrated in the figure below.
 
-![statemachine-03](https://github.com/reselbob/publishing-statemachine/assets/1110569/488b624d-c8fb-46bc-9e6b-85c0e9ebea2f)
+![statemachine-03](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/d1c8441e-2e66-4feb-a038-d471b3b455a2)
 
 The thing to notice about the Temporal code is that the sequence of activities is defined in the
 file [PublicationWorkflowImpl.java](src/main/java/publishingdemo/PublicationWorkflowImpl.java). However, the code for each
