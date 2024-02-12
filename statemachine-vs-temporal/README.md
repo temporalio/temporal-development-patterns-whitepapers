@@ -1,9 +1,11 @@
 # Implementing the Principles of State Machines Using the Temporal Java SDK
 
 The purpose of this project is compare two approaches to implementing a fictitious document publishing use case. One approach implements the use case as a State Machine written as Maven project programmed in Java.
-The other approach implements the workflow using the [Temporal Java SDK](https://github.com/temporalio/sdk-java). The differences in approach are illustrated in the diagram below:
+The other approach implements the workflow using the [Temporal Java SDK](https://github.com/temporalio/sdk-java). The basic logic implemented by both versions is illustrated in the diagram below.
 
-![statemachine-02](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/bfbf13ea-6d34-4e27-b3bd-67f4e69b157b)
+![generic-workflow-01](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/462e7e65-dfcb-4527-b9cf-4b689339bf06)
+
+A document intended for publishing is submitted for processing. The document goes through two phases, Graphic Edit and Copy Edit simultaneously. Then when both phases complete the document is passed on for publication.
 
 The source code for the State Machine project is [here](./statemachine).
 
@@ -22,5 +24,3 @@ On the other hand, Temporal anticipates the need for retries and reversions. Wit
 In a State Machine, even under the best case when a State Machine is well structured, reversion behavior would need to be programmed into each state. Implementing reversion behavior in a loosely structured State Machine can be a foray into working with spaghetti code that is hard to program, not to mention test.
 
 In short, under Temporal, durability is built in. Under a State Machine durability must be programmed in.
-
-
