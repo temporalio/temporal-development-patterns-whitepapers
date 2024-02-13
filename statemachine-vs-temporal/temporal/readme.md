@@ -16,7 +16,8 @@ The thing to notice about the Temporal code is that the sequence of activities i
 file [PublicationWorkflowImpl.java](src/main/java/publishingdemo/PublicationWorkflowImpl.java). However, the code for each
 activity in the workflow is defined in the file [PublishingActivitiesImpl.java](src/main/java/publishingdemo/PublishingActivitiesImpl.java).
 
-Programmatically separating the workflow from its activities is a key feature of Temporal. The separation of concerns makes it possible to change  the sequence
+Programmatically separating the workflow from its activities is a key feature of Temporal. The separation of 
+concerns makes it possible to change the sequence
 of activities in the workflow without having to change the code for the activities. Also, the separation of concerns – workflow from activities –
 makes it possible to add new activities to the workflow easily. For example, if a developer wanted to add a new activity to the workflow, say, `LegalReview`,
 the developer adds a declaration for an activity method named `legalReview()` to the [`PublishingActivities`](src/main/java/publishingdemo/PublishingActivities.java) interface 

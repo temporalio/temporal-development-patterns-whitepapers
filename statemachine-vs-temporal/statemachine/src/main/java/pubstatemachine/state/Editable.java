@@ -16,7 +16,6 @@ public class Editable extends AbstractState {
     System.out.println("Now in the Editable state");
   }
 
-  @Override
   public void update(AbstractMessage message) throws InterruptedException {
     System.out.println(
         current.getClass().getSimpleName() + " is now updating " + message.getMessageType());

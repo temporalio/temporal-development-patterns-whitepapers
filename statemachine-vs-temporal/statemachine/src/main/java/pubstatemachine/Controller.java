@@ -12,10 +12,9 @@ import pubstatemachine.state.*;
  */
 public class Controller {
 
-  private final SimpleMessageQueue queue;
+  private final SimpleMessageQueue queue = new SimpleMessageQueue();
 
   public Controller() {
-    this.queue = new SimpleMessageQueue();
     Thread pollThread =
         new Thread(
             () -> {

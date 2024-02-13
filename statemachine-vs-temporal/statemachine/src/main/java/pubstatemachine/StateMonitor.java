@@ -12,13 +12,13 @@ import pubstatemachine.model.Document;
  */
 public class StateMonitor {
   private final Document document;
-  private boolean isEditable;
-  private boolean isCopyEdited;
-  private boolean isGraphicEdited;
-  private boolean isPublishable;
-  private boolean isPublished;
+  private boolean Editable;
+  private boolean CopyEdited;
+  private boolean GraphicEdited;
+  private boolean Publishable;
+  private boolean Published;
 
-  static List<StateMonitor> stateMonitors = new ArrayList<>();
+  private static final List<StateMonitor> stateMonitors = new ArrayList<>();
 
   public StateMonitor(Document document) {
     this.document = document;
@@ -29,43 +29,43 @@ public class StateMonitor {
   }
 
   public boolean isEditable() {
-    return isEditable;
+    return Editable;
   }
 
   public void setEditable(boolean editable) {
-    isEditable = editable;
+    Editable = editable;
   }
 
   public boolean isCopyEdited() {
-    return isCopyEdited;
+    return CopyEdited;
   }
 
   public void setCopyEdited(boolean copyEdited) {
-    isCopyEdited = copyEdited;
+    CopyEdited = copyEdited;
   }
 
   public boolean isGraphicEdited() {
-    return isGraphicEdited;
+    return GraphicEdited;
   }
 
   public void setGraphicEdited(boolean graphicEdited) {
-    isGraphicEdited = graphicEdited;
+    GraphicEdited = graphicEdited;
   }
 
   public boolean isPublishable() {
-    return isPublishable;
+    return Publishable;
   }
 
   public void setPublishable(boolean publishable) {
-    isPublishable = publishable;
+    Publishable = publishable;
   }
 
   public boolean isPublished() {
-    return isPublished;
+    return Published;
   }
 
   public void setPublished(boolean published) {
-    isPublished = published;
+    Published = published;
   }
 
   public static void addStateMonitor(StateMonitor stateMonitor) {
