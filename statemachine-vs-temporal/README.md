@@ -1,11 +1,11 @@
 # Implementing the Principles of State Machines Using the Temporal Java SDK
 
 The purpose of this project is compare two approaches to implementing a fictitious document publishing use case. One approach implements the use case as a State Machine written as Maven project programmed in Java.
-The other approach implements the workflow using the [Temporal Java SDK](https://github.com/temporalio/sdk-java). The basic logic implemented by both versions is illustrated in the diagram below.
+The other approach implements the workflow using the [Temporal Java SDK](https://github.com/temporalio/sdk-java). The basic logic implemented by both versions is illustrated in the diagram below in Figure 1.
 
-![generic-workflow-01](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/462e7e65-dfcb-4527-b9cf-4b689339bf06)
-
-A document intended for publishing is submitted for processing. The document goes through two phases, Graphic Edit and Copy Edit, simultaneously. Then, when both phases complete the document is passed on for publication.
+|![generic-workflow-01](https://github.com/temporalio/temporal-development-patterns-whitepapers/assets/1110569/462e7e65-dfcb-4527-b9cf-4b689339bf06)|
+|----|
+|**Figure 1:** A document intended for publication is submitted for processing. The document goes through two phases, Graphic Edit and Copy Edit, simultaneously. Then, when both phases complete the document is passed on for publication.|
 
 The source code for the State Machine project is [here](./statemachine).
 
